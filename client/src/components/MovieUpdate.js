@@ -37,8 +37,7 @@ const MovieUpdate = (props) => {
         setUpdatedMovie({...updatedMovie, [event.target.name]: event.target.value })
     }
 
-    const handleChange2 = starID => {
-        return event => {
+    const handleChange2 = (starID, event) => {
         setUpdatedMovie({...updatedMovie, stars: updatedMovie.stars.map((star, existingID) => {
             if (existingID === starID) {
                 return event.target.value
@@ -46,7 +45,6 @@ const MovieUpdate = (props) => {
                 return star
             }
         })})
-        }
     }
   
     return (
@@ -77,7 +75,7 @@ const MovieUpdate = (props) => {
                 name = 'stars'
                 placeholder = 'Stars'
                 value = {starName}
-                onChange = {handleChange2(starID)}/>
+                onChange = {(event) => handleChange2(starID, event)}/>
                 )
             })}
             <button type = 'submit'>Update</button>
