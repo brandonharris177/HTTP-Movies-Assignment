@@ -9,18 +9,16 @@ const MovieUpdate = (props) => {
         stars: [] 
    })
     
-    // const handleSubmit = id => {
-    //     return event => {
-    //         event.preventDefault();
-    //         axios
-    //         .put(`http://localhost:5000/api/movies/${id}`, updatedMovie)
-    //         .then(res => {
-    //             setUpdatedMovie(res.data);
-    //             props.history.push(`/movies`);
-    //           })
-    //         .catch(err => console.log(err.response));
-    //     }
-    // }
+    const handleSubmit = event => {
+        event.preventDefault();
+        axios
+        .put(`http://localhost:5000/api/movies/${props.match.params.id}`, updatedMovie)
+        .then(res => {
+            setUpdatedMovie(res.data);
+            props.history.push(`/`);
+            })
+        .catch(err => console.log(err.response));
+    }
 
     const getMovie = id => {
         axios
@@ -34,11 +32,6 @@ const MovieUpdate = (props) => {
     useEffect(()=> {
         getMovie(props.match.params.id)
     }, [props.match.params.id])
-
-
-    const handleSubmit = event => {
-        event.preventDefault();
-    }
 
     const handleChange = event => {
         setUpdatedMovie({...updatedMovie, [event.target.name]: event.target.value })
@@ -87,6 +80,7 @@ const MovieUpdate = (props) => {
                 onChange = {handleChange2(starID)}/>
                 )
             })}
+            <button type = 'submit'>Update</button>
         </form>
 
     </>
