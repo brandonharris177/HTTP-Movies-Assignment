@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import Movie from '../Movies/Movie';
+import axios from 'axios'
 
 const MovieUpdate = (props) => {
    const [updatedMovie, setUpdatedMovie] = useState({
@@ -8,21 +8,57 @@ const MovieUpdate = (props) => {
         metascore: "",
         stars: [] 
    })
-  
-    // useEffect = () => {
-    //   axios
-    //     .put("http://localhost:5000/api/movies")
-    //     .then(res => this.setState({ movies: res.data }))
-    //     .catch(err => console.log(err.response));
+    
+    // const handleSubmit = id => {
+    //     return event => {
+    //         event.preventDefault();
+    //         axios
+    //         .put(`http://localhost:5000/api/movies/${id}`, updatedMovie)
+    //         .then(res => {
+    //             setUpdatedMovie(res.data);
+    //             props.history.push(`/movies`);
+    //           })
+    //         .catch(err => console.log(err.response));
+    //     }
     // }
+
+    const getMovie = id => {
+        axios
+        .get(`http://localhost:5000/api/movies/${id}`)
+        .then(res => {
+            setUpdatedMovie(res.data);
+            })
+        .catch(err => console.log(err.response));
+    }
+
+    useEffect(()=> {
+        getMovie(props.match.params.id)
+    }, [props.match.params.id])
+
+
+    const handleSubmit = event => {
+        event.preventDefault();
+    }
 
     const handleChange = event => {
         setUpdatedMovie({...updatedMovie, [event.target.name]: event.target.value })
     }
+
+    const handleChange2 = starID => {
+        return event => {
+        setUpdatedMovie({...updatedMovie, stars: updatedMovie.stars.map((star, existingID) => {
+            if (existingID === starID) {
+                return event.target.value
+            } else {
+                return star
+            }
+        })})
+        }
+    }
   
     return (
     <>
-        <form>
+        <form onSubmit = {handleSubmit}>
             <input 
                 type = 'text'
                 name = 'title'
@@ -41,12 +77,16 @@ const MovieUpdate = (props) => {
                 placeholder = 'Metascore'
                 value = {updatedMovie.metascore}
                 onChange = {handleChange}/>
-            <input 
+            {updatedMovie.stars.map((starName, starID) => {
+                return (
+                    <input 
                 type = 'text'
                 name = 'stars'
                 placeholder = 'Stars'
-                value = {updatedMovie.stars}
-                onChange = {handleChange}/>
+                value = {starName}
+                onChange = {handleChange2(starID)}/>
+                )
+            })}
         </form>
 
     </>
