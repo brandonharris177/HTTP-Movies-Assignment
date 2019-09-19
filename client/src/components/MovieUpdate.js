@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 
 const MovieUpdate = (props) => {
-    [updatedMovie, setUpdatedMovie] = useState ([])
+   const [updatedMovie, setUpdatedMovie] = useState([])
   
     // useEffect = () => {
     //   axios
@@ -11,8 +11,9 @@ const MovieUpdate = (props) => {
     // }
   
     return (
-    <div>
-    </div>
+    <>
+
+    </>
     );
 }
 
